@@ -1,9 +1,11 @@
 package com.example.rentals
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,9 +13,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -27,6 +36,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.rentals.ui.theme.RentalsTheme
@@ -58,12 +69,12 @@ fun Login() {
                     var email  by remember { mutableStateOf("") }
                     var password  by remember { mutableStateOf("") }
                     var role  by remember { mutableStateOf("") }
-                    val expanded by remember { mutableStateOf(false) }
-                    var list = listOf("landlord", "caretaker")
-                    var icon = if (expanded){
-                        Icon(painterResource(id = R.drawable.baseline_arrow_drop_down_24), contentDescription = null)
+                    var expanded by remember { mutableStateOf(false) }
+                    val list = listOf("landlord", "caretaker")
+                    val icon = if (expanded){
+                        Icons.Filled.KeyboardArrowUp
                     } else{
-                        Icon(painterResource(id = R.drawable.baseline_arrow_drop_up_24), contentDescription = null)
+                        Icons.Filled.KeyboardArrowDown
                     }
                     val context = LocalContext.current
                     Spacer(modifier = Modifier.size(20.dp))
@@ -72,6 +83,36 @@ fun Login() {
                     OutlinedTextField(value = email, onValueChange = {email=it},
                         label = { Text(text = "Email")},
                         leadingIcon = { Icon(painterResource(id = R.drawable.baseline_email_24), contentDescription =null)})
+                    Spacer(modifier = Modifier.size(20.dp))
+                    Box (modifier = Modifier.wrapContentSize(), contentAlignment = Alignment.Center){
+                        OutlinedTextField(value = role, onValueChange = {role=it},
+                            label = { Text(text = "Role")},
+                            leadingIcon = { Icon(painterResource(id = R.drawable.baseline_person_24), contentDescription =null)},
+                            trailingIcon = { Icon(icon, contentDescription = null,
+                                modifier = Modifier.clickable { expanded=!expanded })},
+                            readOnly = true)
+                        DropdownMenu(expanded = expanded, onDismissRequest = { expanded= false }) {
+                            list.forEach { label->
+                                DropdownMenuItem(text = { Text(text = label) },
+                                    onClick = {
+                                        role=label
+                                        expanded=false
+                                    })
+                            }
+
+                        }
+
+                    }
+                    Spacer(modifier = Modifier.size(20.dp))
+                    OutlinedTextField(value = password, onValueChange = {password=it},
+                        label = { Text(text = "password")},
+                        leadingIcon = {Icon(painterResource(id = R.drawable.baseline_lock_24), contentDescription = null)},
+                        visualTransformation = PasswordVisualTransformation())
+                    Spacer(modifier = Modifier.size(20.dp))
+                    Button(onClick = { /*TODO*/ }, modifier = Modifier.width(200.dp)) {
+                        Text(text = "Login", fontWeight = FontWeight.Bold)
+                        
+                    }
                     
                     
                 }
