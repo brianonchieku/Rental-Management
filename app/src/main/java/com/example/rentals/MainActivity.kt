@@ -1,5 +1,6 @@
 package com.example.rentals
 
+import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -41,6 +42,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.rentals.ui.theme.RentalsTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +80,8 @@ fun Login() {
                         Icons.Filled.KeyboardArrowDown
                     }
                     val context = LocalContext.current
+                    val auth = FirebaseAuth.getInstance()
+                    val db = FirebaseFirestore.getInstance()
                     Spacer(modifier = Modifier.size(20.dp))
                     Text(text = "Loin")
                     Spacer(modifier = Modifier.size(20.dp))
@@ -109,12 +114,37 @@ fun Login() {
                         leadingIcon = {Icon(painterResource(id = R.drawable.baseline_lock_24), contentDescription = null)},
                         visualTransformation = PasswordVisualTransformation())
                     Spacer(modifier = Modifier.size(20.dp))
-                    Button(onClick = { /*TODO*/ }, modifier = Modifier.width(200.dp)) {
+                    Button(onClick = {
+                        if(email.isNotEmpty() && role.isNotEmpty() && password.isNotEmpty()){
+                            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task->
+                                if(task.isSuccessful){
+                                    val current = auth.currentUser
+                                    if(current != null){
+                                        val userId = current.uid
+
+                                        db.collection("Users").document(userId).get()
+                                            .addOnSuccessListener { document->
+                                                if(document.exists()){
+                                                    val userRole = document.getString("Role")
+                                                    if(userRole == role){
+                                                        val intent = Intent(context, MainActivity::class.java)
+                                                        context.startActivity(intent)
+                                                    }
+                                                }
+
+                                            }
+                                    }
+                                }
+
+
+                            }
+
+                        }
+                    }, modifier = Modifier.width(200.dp)) {
                         Text(text = "Login", fontWeight = FontWeight.Bold)
                         
                     }
-                    
-                    
+
                 }
 
             }
