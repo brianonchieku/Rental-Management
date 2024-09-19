@@ -3,6 +3,7 @@ package com.example.rentals
 import android.content.Intent
 import android.graphics.drawable.Icon
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -127,8 +128,11 @@ fun Login() {
                                                 if(document.exists()){
                                                     val userRole = document.getString("Role")
                                                     if(userRole == role){
-                                                        val intent = Intent(context, MainActivity::class.java)
-                                                        context.startActivity(intent)
+                                                        //val intent = Intent(context, MainActivity::class.java)
+                                                      //  context.startActivity(intent)
+                                                        Toast.makeText(context, "login successful", Toast.LENGTH_SHORT).show()
+                                                    } else{
+                                                        Toast.makeText(context, "Role mismatch", Toast.LENGTH_SHORT).show()
                                                     }
                                                 }
 
