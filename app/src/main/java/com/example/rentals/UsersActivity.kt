@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -51,6 +54,7 @@ class UsersActivity : ComponentActivity() {
 fun Users() {
     val users = remember { mutableStateOf<List<User>>(emptyList()) }
     val scope = rememberCoroutineScope()
+    val showDialog = remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         scope.launch {
@@ -76,12 +80,27 @@ fun Users() {
                     }
 
                 }
-
             }
         }
 
     }
 
+}
+
+@Composable
+fun AddUserDialog(){
+    val name by remember { mutableStateOf("") }
+    val email by remember { mutableStateOf("") }
+    val phone by remember { mutableStateOf("")}
+    val role by remember { mutableStateOf("") }
+    val password by remember { mutableStateOf("") }
+    val list = listOf("landlord", "caretaker")
+    val expanded by remember { mutableStateOf(false) }
+    val icon = if (expanded){
+        Icons.Default.KeyboardArrowDown
+    } else{
+        Icons.Default.KeyboardArrowUp
+    }
 }
 
 suspend fun fetchUsers(): List<User>{
