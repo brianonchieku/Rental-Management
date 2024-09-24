@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -38,6 +39,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,7 +99,7 @@ fun Users() {
 }
 
 @Composable
-fun AddUserDialog(){
+fun AddUserDialog(onDismiss: () -> Unit, addUser: (User)-> Unit){
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("")}
@@ -105,13 +107,14 @@ fun AddUserDialog(){
     var password by remember { mutableStateOf("") }
     val list = listOf("landlord", "caretaker")
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
     val icon = if (expanded){
         Icons.Default.KeyboardArrowDown
     } else{
         Icons.Default.KeyboardArrowUp
     }
     
-    Dialog(onDismissRequest = { }) {
+    Dialog(onDismissRequest = {onDismiss()}) {
         Card(modifier = Modifier.padding(16.dp)) {
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Text(text = "Add new user", fontWeight = FontWeight.Bold)
@@ -136,8 +139,26 @@ fun AddUserDialog(){
                 }
 
                 TextField(value = password, onValueChange = {password=it}, label = { Text(text = "Password")})
-
                 
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    TextButton(onClick = { onDismiss() }) {
+                        Text(text = "cancel")
+                    }
+                    TextButton(onClick = {
+                        if (name.isEmpty()||email.isEmpty()||phone.isEmpty()||role.isEmpty()||password.isEmpty()){
+                            Toast.makeText(context, "fill all the fields", Toast.LENGTH_SHORT).show()
+                        } else{
+                            val newUser = User(name,email,phone,role,password)
+                            addUser(newUser)
+
+                        }
+                    }) {
+                        Text(text = "Add", fontWeight = FontWeight.Bold)
+                        
+                    }
+                    
+                }
+
             }
             
         }
@@ -170,7 +191,8 @@ data class User(
     val name: String = "",
     val email: String = "",
     val number: String = "",
-    val role: String = ""
+    val role: String = "",
+    val password: String = ""
 )
 
 @Preview(showBackground = true)
