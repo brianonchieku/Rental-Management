@@ -97,7 +97,6 @@ fun Users() {
         }
 
     }
-
 }
 
 @Composable
@@ -184,10 +183,13 @@ fun addUserToFirebase(user: User, context: Context){
                 db.collection("Users").document(userId).set(details).addOnSuccessListener {
                     Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show()
                 }
+            } else{
+                Toast.makeText(context, "Try Again", Toast.LENGTH_SHORT).show()
             }
+        } else{
+            Toast.makeText(context, "failed", Toast.LENGTH_SHORT).show()
         }
     }
-
 }
 
 suspend fun fetchUsers(): List<User>{
