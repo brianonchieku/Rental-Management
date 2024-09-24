@@ -10,11 +10,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -103,6 +106,35 @@ fun Users() {
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun UsersList(users: List<User>){
+    LazyColumn(modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(18.dp),
+        verticalArrangement = Arrangement.spacedBy(1.dp)) {
+
+        items(users){user->
+            UserDetails(user = user)
+        }
+    }
+}
+
+@Composable
+fun UserDetails(user: User){
+    Card(modifier = Modifier
+        .fillMaxWidth()
+        .padding(8.dp)) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp),
+            verticalArrangement = Arrangement.Center) {
+            Text(text = "Name: ${user.name}")
+            Text(text = "Email: ${user.email}")
+            Text(text = "Phone Number: ${user.number}")
+            Text(text = "Role: ${user.role}")
         }
     }
 }
