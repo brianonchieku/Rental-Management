@@ -1,5 +1,6 @@
 package com.example.rentals
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -45,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.rentals.ui.theme.RentalsTheme
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.launch
@@ -150,11 +152,9 @@ fun AddUserDialog(onDismiss: () -> Unit, addUser: (User)-> Unit){
                         } else{
                             val newUser = User(name,email,phone,role,password)
                             addUser(newUser)
-
                         }
                     }) {
                         Text(text = "Add", fontWeight = FontWeight.Bold)
-                        
                     }
                     
                 }
@@ -164,6 +164,30 @@ fun AddUserDialog(onDismiss: () -> Unit, addUser: (User)-> Unit){
         }
         
     }
+}
+
+fun addUserToFirebase(user: User, context: Context){
+    val db = FirebaseFirestore.getInstance()
+    val auth = FirebaseAuth.getInstance()
+
+    auth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener { task->
+        if (task.isSuccessful){
+            val current = auth.currentUser
+            if (current!=null){
+                val userId = current.uid
+                val details= hashMapOf(
+                    "Name" to user.name,
+                    "Email" to user.email,
+                    "Phone Number" to user.number,
+                    "Role" to user.role
+                )
+                db.collection("Users").document(userId).set(details).addOnSuccessListener {
+                    Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
 }
 
 suspend fun fetchUsers(): List<User>{
