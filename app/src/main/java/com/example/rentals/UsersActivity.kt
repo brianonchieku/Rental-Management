@@ -68,6 +68,7 @@ fun Users() {
     val users = remember { mutableStateOf<List<User>>(emptyList()) }
     val scope = rememberCoroutineScope()
     val showDialog = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         scope.launch {
@@ -91,11 +92,18 @@ fun Users() {
                         Text(text = "Add User")
 
                     }
-
+                }
+                if (showDialog.value){
+                    AddUserDialog(onDismiss = { showDialog.value=false }) { newUser->
+                        scope.launch {
+                            addUserToFirebase(newUser, context)
+                            users.value = fetchUsers()
+                            showDialog.value = false
+                        }
+                    }
                 }
             }
         }
-
     }
 }
 
