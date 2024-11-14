@@ -15,7 +15,7 @@ class UserRepository {
             users.addAll(snapshot.documents.map { doc ->
                 User(
                     name = doc.getString("Name") ?:"",
-                    email = doc.getString("Emai") ?:"",
+                    email = doc.getString("Email") ?:"",
                     number = doc.getString("Phone Number") ?:"",
                     role = doc.getString("Role") ?:""
                 )
@@ -23,8 +23,6 @@ class UserRepository {
         } catch (_: FirebaseFirestoreException){
 
         }
-
         return users
-
     }
 }
