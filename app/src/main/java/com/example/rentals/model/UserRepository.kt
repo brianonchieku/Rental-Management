@@ -48,9 +48,12 @@ class UserRepository {
                     db.collection("Users").document(userId).set(details).addOnSuccessListener {
                         Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show()
                     }
+                }else{
+                    Toast.makeText(context, "Log in first", Toast.LENGTH_SHORT).show()
                 }
+            }else{
+                Toast.makeText(context, "Filed. Try again", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 }
