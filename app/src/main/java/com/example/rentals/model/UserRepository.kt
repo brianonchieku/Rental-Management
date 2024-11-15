@@ -56,4 +56,28 @@ class UserRepository {
             }
         }
     }
+
+   /* fun userLogin(user: User, role: String){
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
+
+        auth.signInWithEmailAndPassword(user.email, user.password).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                val current = auth.currentUser
+                if (current!=null){
+                    val userId = current.uid
+                    db.collection("Users").document(userId).get().addOnSuccessListener { doc ->
+                        if (doc.exists()){
+                            val userRole = doc.getString("Role")
+                            if (userRole==role){
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+    }*/
 }
