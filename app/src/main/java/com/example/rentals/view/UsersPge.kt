@@ -24,14 +24,6 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UsersPage(){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-            .padding(top = 30.dp),
-        verticalArrangement = Arrangement.Center
-
-    ) {
         Scaffold (topBar = {
             TopAppBar(title = { Text(text = "Users") }, navigationIcon = {
                 Icon(imageVector = Icons.Default.Person, contentDescription =null )
@@ -62,6 +54,4 @@ fun UsersPage(){
 
 
         }
-
-    }
 }
