@@ -9,8 +9,11 @@ import kotlinx.coroutines.tasks.await
 
 class UserRepository {
 
+    private val db= FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
     suspend fun fetchUsers(): List<User>{
-        val db = FirebaseFirestore.getInstance()
+
         val users = mutableListOf<User>()
 
         try {
@@ -29,9 +32,7 @@ class UserRepository {
         return users
     }
 
-    fun addUser(user: User, context: Context){
-        val db = FirebaseFirestore.getInstance()
-        val auth = FirebaseAuth.getInstance()
+    fun addUser(user: User, context: Context, onSuccess: () -> Unit, onFailure: () -> Unit){
 
         auth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener { task ->
             if (task.isSuccessful){
@@ -47,12 +48,15 @@ class UserRepository {
 
                     db.collection("Users").document(userId).set(details).addOnSuccessListener {
                         Toast.makeText(context, "Added successfully", Toast.LENGTH_SHORT).show()
+                        onSuccess()
+                    }.addOnFailureListener {
+                        Toast.makeText(context, "Failed to add user", Toast.LENGTH_SHORT).show()
+                        onFailure()
                     }
-                }else{
-                    Toast.makeText(context, "Log in first", Toast.LENGTH_SHORT).show()
                 }
             }else{
                 Toast.makeText(context, "Filed. Try again", Toast.LENGTH_SHORT).show()
+                onFailure()
             }
         }
     }

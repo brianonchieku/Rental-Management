@@ -17,41 +17,48 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.rentals.viewmodel.UserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UsersPage(){
-        Scaffold (topBar = {
-            TopAppBar(title = { Text(text = "Users") }, navigationIcon = {
-                Icon(imageVector = Icons.Default.Person, contentDescription =null )
-            })
-        }){ paddingValues ->
-            Box (
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ){
-                Column(
-                    modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row (
-                        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-                    ){
-                        Button(onClick = { /*TODO*/ }, shape = RoundedCornerShape(15.dp)) {
-                            Text(text = "Add user")
-                            
-                        }
-                        
+fun UsersPage(viewModel: UserViewModel){
+
+    val users by viewModel.users.observeAsState()
+
+    LaunchedEffect(Unit){
+        users
+
+
+    }
+    Scaffold (topBar = {
+        TopAppBar(title = { Text(text = "Users") }, navigationIcon = {
+            Icon(imageVector = Icons.Default.Person, contentDescription =null )
+        })
+    }){ paddingValues ->
+        Box (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
+            contentAlignment = Alignment.Center
+        ){
+            Column(
+                modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row (
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
+                ){
+                    Button(onClick = { /*TODO*/ }, shape = RoundedCornerShape(15.dp)) {
+                        Text(text = "Add user")
+
                     }
-
                 }
-
             }
-
-
         }
+    }
 }

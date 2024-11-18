@@ -1,5 +1,6 @@
 package com.example.rentals.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,8 +11,8 @@ import kotlinx.coroutines.launch
 
 class UserViewModel: ViewModel() {
 
-    val userRepository: UserRepository = UserRepository()
-    private val _users = MutableLiveData<List<User>>()
+    private val userRepository: UserRepository = UserRepository()
+    private val _users = MutableLiveData<List<User>>(emptyList())
     val users: LiveData<List<User>> = _users
 
     fun fetchUsers(){
@@ -19,7 +20,16 @@ class UserViewModel: ViewModel() {
             val results = userRepository.fetchUsers()
             _users.value = results
         }
+    }
 
+    fun addUser(user: User, context: Context, onComplete:() -> Unit){
+        userRepository.addUser(user, context, {
+            fetchUsers()
+            onComplete()
+
+        },{
+            onComplete()
+        } )
 
     }
 }
