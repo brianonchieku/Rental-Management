@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,11 +73,17 @@ fun UsersPage(viewModel: UserViewModel){
 
                     }
                 }
-                when(users){
-                    is NetworkResponse.Error -> TODO()
-                    NetworkResponse.Loading -> TODO()
-                    is NetworkResponse.Success -> TODO()
-                    null -> TODO()
+                when(val result = users){
+                    is NetworkResponse.Error -> {
+                        Text(text = result.message)
+                    }
+                    NetworkResponse.Loading -> {
+                        CircularProgressIndicator()
+                    }
+                    is NetworkResponse.Success -> {
+                        UsersList(users = result.data)
+                    }
+                    null -> {}
                 }
             }
         }
