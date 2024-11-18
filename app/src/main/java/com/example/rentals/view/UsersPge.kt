@@ -72,8 +72,6 @@ fun UsersPage(viewModel: UserViewModel){
                     is NetworkResponse.Success -> TODO()
                     null -> TODO()
                 }
-
-
             }
         }
     }
