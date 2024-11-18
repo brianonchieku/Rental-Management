@@ -42,7 +42,6 @@ fun UsersPage(viewModel: UserViewModel){
             viewModel.fetchUsers()
         }
 
-
     }
     Scaffold (topBar = {
         TopAppBar(title = { Text(text = "Users") }, navigationIcon = {
@@ -66,6 +65,8 @@ fun UsersPage(viewModel: UserViewModel){
 
                     }
                 }
+
+
             }
         }
     }
