@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.rentals.NetworkResponse
 import com.example.rentals.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -64,6 +65,12 @@ fun UsersPage(viewModel: UserViewModel){
                         Text(text = "Add user")
 
                     }
+                }
+                when(users){
+                    is NetworkResponse.Error -> TODO()
+                    NetworkResponse.Loading -> TODO()
+                    is NetworkResponse.Success -> TODO()
+                    null -> TODO()
                 }
 
 
