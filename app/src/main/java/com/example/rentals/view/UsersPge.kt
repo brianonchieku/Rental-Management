@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.rentals.NetworkResponse
+import com.example.rentals.model.User
 import com.example.rentals.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -75,4 +77,32 @@ fun UsersPage(viewModel: UserViewModel){
             }
         }
     }
+}
+
+@Composable
+fun UserDetails(user: User){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp)
+    ) {
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Column(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Text(text = "Name: ${user.name}")
+                Text(text = "Email: ${user.email}")
+                Text(text = "Phone number: ${user.number}")
+                Text(text = "Role: ${user.role}")
+
+            }
+
+        }
+
+    }
+
 }
