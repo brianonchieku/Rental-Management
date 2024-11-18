@@ -26,7 +26,6 @@ class UserViewModel: ViewModel() {
         userRepository.addUser(user, context, {
             fetchUsers()
             onComplete()
-
         },{
             onComplete()
         } )
